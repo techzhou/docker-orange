@@ -24,7 +24,7 @@ RUN \
 
     && yum-config-manager --add-repo https://openresty.org/yum/cn/centos/OpenResty.repo \
     && yum install -y epel-release \
-    && yum install -y dnsmasq openresty openresty-resty make telnet luarocks \
+    && yum install -y dnsmasq openresty openresty-resty make telnet luarocks gcc lua-devel \
 
     && yum clean all \
 
@@ -42,7 +42,10 @@ RUN \
     && cd orange-${ORANGE_VERSION} \
     && make install \
     
-    && luarocks install penlight lua-resty-dns-client lua-resty-http luasocket
+    && luarocks install penlight \
+    && luarocks install lua-resty-dns-client \
+    && luarocks install lua-resty-http \
+    && luarocks install luasocket \
 
     && cd / \
     && rm -rf /tmp/* \
