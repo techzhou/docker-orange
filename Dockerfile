@@ -4,6 +4,7 @@ MAINTAINER Syhily, syhily@gmail.com
 # Docker Build Arguments, For further upgrade
 ENV ORANGE_PATH="/usr/local/orange"
 ARG LOR_VERSION="0.3.4"
+ARG LR_VERSION="2.4.4"
 ENV ORANGE_VERSION="0.7.0-dev"
 
 ADD docker-entrypoint.sh docker-entrypoint.sh
@@ -24,7 +25,7 @@ RUN \
 
     && yum-config-manager --add-repo https://openresty.org/yum/cn/centos/OpenResty.repo \
     && yum install -y epel-release \
-    && yum install -y dnsmasq openresty openresty-resty make telnet luarocks gcc lua-devel \
+    && yum install -y dnsmasq openresty openresty-resty make telnet gcc lua-devel \
 
     && yum clean all \
 
@@ -42,10 +43,19 @@ RUN \
     && cd orange-${ORANGE_VERSION} \
     && make install \
     
-    && luarocks install penlight \
-    && luarocks install lua-resty-dns-client \
-    && luarocks install lua-resty-http \
-    && luarocks install luasocket \
+    && cd /tmp \
+    && curl -fSL https://luarocks.org/releases/luarocks-${LR_VERSION}.tar.gz -o luarocks.tar.gz \
+    && tar zxf luarocks.tar.gz \
+    && cd luarocks-${LR_VERSION} \
+    && ./configure --prefix=/usr/local/openresty/luajit \
+    --with-lua=/usr/local/openresty/luajit/ \
+    --lua-suffix=jit-2.1.0-beta3 \
+    --with-lua-include=/usr/local/openresty/luajit/include/luajit-2.1
+    && make install
+    && /usr/local/openresty/luajit/bin/luarocks install penlight \
+    && /usr/local/openresty/luajit/bin/luarocks install lua-resty-dns-client \
+    && /usr/local/openresty/luajit/bin/luarocks install lua-resty-http \
+    && /usr/local/openresty/luajit/bin/luarocks install luasocket \
 
     && cd / \
     && rm -rf /tmp/* \
