@@ -48,10 +48,10 @@ RUN \
     && tar zxf luarocks.tar.gz \
     && cd luarocks-${LR_VERSION} \
     && ./configure --prefix=/usr/local/openresty/luajit \
-    --with-lua=/usr/local/openresty/luajit/ \
+    --with-lua=/usr/local/openresty/luajit \
     --lua-suffix=jit-2.1.0-beta3 \
     --with-lua-include=/usr/local/openresty/luajit/include/luajit-2.1 \
-    && make install \
+    && make bootstrap \
     && /usr/local/openresty/luajit/bin/luarocks install penlight \
     && /usr/local/openresty/luajit/bin/luarocks install lua-resty-dns-client \
     && /usr/local/openresty/luajit/bin/luarocks install lua-resty-http \
