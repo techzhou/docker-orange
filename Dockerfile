@@ -25,7 +25,7 @@ RUN \
 
     && yum-config-manager --add-repo https://openresty.org/yum/cn/centos/OpenResty.repo \
     && yum install -y epel-release \
-    && yum install -y dnsmasq openresty openresty-resty make telnet gcc lua-devel \
+    && yum install -y dnsmasq openresty openresty-resty make telnet gcc lua-devel unzip \
 
     && yum clean all \
 
